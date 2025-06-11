@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Audio Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>PDF to Audio Converter</h1>
+            <p>Convert your PDF documents to high-quality MP3 audio files</p>
+        </header>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>Real PDF Processing</h3>
+                    <p>Extract text from actual PDF documents</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>MP3 Audio Files</h3>
+                    <p>Generate downloadable MP3 audio files</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Customizable Settings</h3>
+                    <p>Adjust speed, voice, and page range</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Privacy Focused</h3>
+                    <p>All processing happens in your browser</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <div class="card">
+                <div class="card__body">
+                    <h2>Step 1: Upload PDF File</h2>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <div class="upload-icon">📁</div>
+                            <p class="upload-text">Drag & drop your PDF file here or <span class="upload-link">browse to select</span></p>
+                            <p class="upload-limit">Maximum file size: 50MB</p>
+                        </div>
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
+                    </div>
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <div class="file-details">
+                            <div class="file-name" id="fileName"></div>
+                            <div class="file-stats" id="fileStats"></div>
+                        </div>
+                        <button class="btn btn--secondary btn--sm" id="removeFile">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section class="settings-section" id="settingsSection" style="display: none;">
+            <div class="card">
+                <div class="card__body">
+                    <h2>Step 2: Configure Settings</h2>
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="speedSlider">Speech Speed: <span id="speedValue">150</span> WPM</label>
+                            <input type="range" id="speedSlider" class="speed-slider" min="50" max="400" value="150">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="voiceSelect">Voice Gender</label>
+                            <select id="voiceSelect" class="form-control">
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="startPage">Start Page</label>
+                            <input type="number" id="startPage" class="form-control" min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="endPage">End Page</label>
+                            <input type="number" id="endPage" class="form-control" min="1" value="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Convert Section -->
+        <section class="convert-section" id="convertSection" style="display: none;">
+            <div class="card">
+                <div class="card__body">
+                    <h2>Step 3: Convert to Audio</h2>
+                    <div class="convert-content">
+                        <button class="btn btn--primary btn--lg btn--full-width" id="convertBtn">
+                            Convert & Download MP3
+                        </button>
+                        <div class="progress-container" id="progressContainer" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <div class="progress-text" id="progressText">Preparing...</div>
+                        </div>
+                        <div class="status-message" id="statusMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section class="download-section" id="downloadSection" style="display: none;">
+            <div class="card">
+                <div class="card__body">
+                    <h2>Step 4: Download Your Audio</h2>
+                    <div class="download-content">
+                        <div class="download-info">
+                            <div class="download-icon">🎵</div>
+                            <div class="download-details">
+                                <div class="download-title" id="downloadTitle">Your MP3 is ready!</div>
+                                <div class="download-size" id="downloadSize"></div>
+                            </div>
+                        </div>
+                        <button class="btn btn--primary btn--lg" id="downloadBtn">
+                            Download MP3
+                        </button>
+                        <button class="btn btn--secondary" id="resetBtn">
+                            Convert Another File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructions -->
+        <section class="instructions">
+            <div class="card">
+                <div class="card__body">
+                    <h2>How to Use</h2>
+                    <ol class="instruction-list">
+                        <li>Upload your PDF file by dragging and dropping it into the upload area or clicking to browse</li>
+                        <li>Adjust the speech speed using the slider (50-400 words per minute)</li>
+                        <li>Select your preferred voice gender (male or female)</li>
+                        <li>Choose the page range you want to convert</li>
+                        <li>Click 'Convert & Download' to start the process</li>
+                        <li><strong>When prompted, select 'Share system audio' in the browser permission dialog</strong></li>
+                        <li>Wait for the conversion to complete and download your MP3 file</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>All processing happens locally in your browser for maximum privacy</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set PDF.js worker path
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
